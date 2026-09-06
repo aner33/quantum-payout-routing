@@ -1,0 +1,65 @@
+{
+  "simulation_seed": "quantum-router-2026",
+  "_simulation_seed_note": "Фиксированный seed для воспроизводимости прогонов симуляции approved/rejected/expired. Подобран и сверен с data/reference_decisions.json (все 4 детерминированных кейса остаются на нужном провайдере). Меняйте на свой страх и риск - перепроверьте детерминированные кейсы после смены.",
+
+  "quantum": {
+    "p": 2,
+    "shots": 4096,
+    "restarts": 5,
+    "_restarts_note": "Число случайных рестартов COBYLA (лучший по expectation value побеждает) -- снижает шанс, что QAOA застрянет в посредственном локальном минимуме на одной попытке.",
+    "backend": "simulator",
+    "_backend_note": "'simulator' (по умолчанию, быстро и бесплатно) или 'qpu' (реальное железо IBM на финальный шаг сэмплирования, требует pip install qiskit-ibm-runtime + сохранённый аккаунт, см. quantum/README.md)"
+  },
+
+  "strategies": {
+    "traffic_share": {
+      "enabled": true,
+      "weight": 1.0,
+      "_comment": "Стратегия 1: доля по количеству заявок (traffic_percentage)"
+    },
+    "volume_share": {
+      "enabled": true,
+      "weight": 1.0,
+      "_comment": "Стратегия 2: доля по объёму (volume_share_pct)"
+    },
+    "priority_cascade": {
+      "enabled": true,
+      "weight": 0.4,
+      "_comment": "Стратегия 3: очередь в каскаде (priority)"
+    },
+    "conversion": {
+      "enabled": true,
+      "weight": 0.8,
+      "_comment": "Стратегия 5: приоритизация по конверсии (conversion_24h)"
+    },
+    "turnover_obligation": {
+      "enabled": true,
+      "weight": 0.6,
+      "_comment": "Стратегия 7: фин. обязательства по обороту (daily_turnover_min/max)"
+    },
+    "amount_fit": {
+      "enabled": true,
+      "weight": 0.3,
+      "_comment": "Стратегия 4, soft-часть: диапазон суммы влияет на выбор МЕЖДУ доступными, а не только фильтрует (жюри-критерий 'Гибкость правил маршрутизации')"
+    }
+  },
+
+  "provider_overrides": {
+    "_comment": "Поля, которых нет в data/providers.json (см. раздел 'Вводные данные' -> 'Поля, которые командам полезно добавить самим'). daily_turnover_min для payflow и порядок величины взяты прямо из примера конфликта в описании кейса.",
+    "vipay": {
+      "requests_per_minute_limit": 7,
+      "volume_share_pct": 45,
+      "daily_turnover_max": 5000000
+    },
+    "payflow": {
+      "requests_per_minute_limit": 10,
+      "volume_share_pct": 30,
+      "daily_turnover_min": 2000000
+    },
+    "quickpay": {
+      "requests_per_minute_limit": 15,
+      "volume_share_pct": 25
+    },
+    "spacepayments": {}
+  }
+}

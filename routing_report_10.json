@@ -1,0 +1,54 @@
+{
+  "period": "2026-07-30",
+  "total_operations": 10,
+  "distribution": {
+    "vipay": {
+      "count": 4,
+      "share_pct": 40.0,
+      "target_pct": 40.0
+    },
+    "payflow": {
+      "count": 1,
+      "share_pct": 10.0,
+      "target_pct": 35.0
+    },
+    "quickpay": {
+      "count": 4,
+      "share_pct": 40.0,
+      "target_pct": 25.0
+    },
+    "spacepayments": {
+      "count": 1,
+      "share_pct": 10.0,
+      "target_pct": 0.0
+    }
+  },
+  "skip_reasons": {
+    "bank_not_in_list": 8,
+    "amount_exceeds_limit": 3,
+    "amount_below_minimum": 2,
+    "simulated_expired": 2
+  },
+  "projected_daily_utilization": {
+    "vipay": {
+      "used": 3302000,
+      "limit": 5000000,
+      "utilization_pct": 66.0
+    },
+    "payflow": {
+      "used": 2900800,
+      "limit": 3000000,
+      "utilization_pct": 96.7
+    },
+    "quickpay": {
+      "used": 1343000,
+      "limit": 8000000,
+      "utilization_pct": 16.8
+    }
+  },
+  "recommendations": [
+    "payflow: фактическая доля 10.0% заметно ниже целевой 35.0% - повысить приоритет или ослабить лимиты конкурентов",
+    "quickpay: фактическая доля 40.0% заметно выше целевой 25.0% - снизить приоритет или traffic_percentage",
+    "payflow близок к дневному лимиту (96.7%) - снизить traffic_percentage или увеличить daily_amount_limit"
+  ]
+}
